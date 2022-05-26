@@ -1,0 +1,53 @@
+repositories:
+  - name: ingress-nginx
+    url: https://kubernetes.github.io/ingress-nginx
+  - name: jetstack
+    url: https://charts.jetstack.io
+  - name: postgres-operator-charts
+    url: https://opensource.zalando.com/postgres-operator/charts/postgres-operator
+  - name: postgres-operator-ui-charts
+    url: https://opensource.zalando.com/postgres-operator/charts/postgres-operator-ui
+  - name: cowboysysop
+    url: https://cowboysysop.github.io/charts/
+  - name: metrics-server
+    url: https://kubernetes-sigs.github.io/metrics-server/
+
+releases:
+    ### INGRESS STUFF
+  - name: ingress-nginx
+    namespace: ingress-nginx
+    chart: ingress-nginx/ingress-nginx
+    values:
+      - ./ingress-nginx-values.yaml
+  - name: cert-manager
+    namespace: cert-manager
+    chart: jetstack/cert-manager
+    set:
+      - name: "installCRDs"
+        value: true
+  - name: letsencrypt
+    namespace: default
+    chart: ./letsencrypt
+    set:
+      - name: email
+        value: "haf@protonmail.ch"
+
+    ### DB STUFF 
+    # Note that the helm chart already has some sane defaults like
+    # running as non-root (but do they work, actually?)
+  - name: postgres-operator
+    chart: postgres-operator-charts/postgres-operator
+    namespace: operators
+    values:
+      - ./postgres-operator-values.yaml
+  - name: postgres-operator-ui
+    chart: postgres-operator-ui-charts/postgres-operator-ui
+    namespace: operators
+
+    ### OTHER STUFF
+  - name: metrics-server
+    chart: metrics-server/metrics-server
+    namespace: observability
+  - name: vertical-pod-autoscaler
+    chart: cowboysysop/vertical-pod-autoscaler
+    namespace: vertical-pod-autoscaler
