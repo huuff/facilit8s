@@ -2,5 +2,6 @@ controller:
   service:
     annotations:
       "load-balancer.hetzner.cloud/location": "nbg1"
+      "load-balancer.hetzner.cloud/name": "ingress-nginx"
   ingressClassResource:
     default: true

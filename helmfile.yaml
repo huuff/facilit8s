@@ -31,6 +31,8 @@ releases:
     set:
       - name: email
         value: "haf@protonmail.ch"
+    needs:
+      - cert-manager/cert-manager
 
     ### DB STUFF 
     # Note that the helm chart already has some sane defaults like
